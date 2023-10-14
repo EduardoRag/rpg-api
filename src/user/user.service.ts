@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist';
+import * as bcrypt from 'bcrypt';
+import { StatusCode } from 'src/types/statusCode';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,8 +14,28 @@ export class UserService {
     private usersRepository: Repository<User>
   ) { }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto): Promise<void> {
+    if (!createUserDto.username) {
+      throw new BadRequestException('Username is required.');
+    }
+
+    if (!createUserDto.password) {
+      throw new BadRequestException('Password is required.');
+    }
+
+    const userFound = await this.usersRepository.findOne({ where: { username: createUserDto.username } });
+
+    if (userFound) {
+      throw new BadRequestException('This username is already being used');
+    }
+
+    const password = await bcrypt.hash(createUserDto.password.toString(), 10);
+
+    createUserDto.password = password;
+
+    await this.usersRepository.save(createUserDto);
+
+    return;
   }
 
   findAll(): Promise<User[]> {
