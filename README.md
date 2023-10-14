@@ -9,7 +9,7 @@ This project is for studying purposes and is still a work in progress using **Ne
 ---
 ## To-Do List
 - [x] Create database
-- [ ] Registering functions
+- [x] Registering functions
 - [ ] Login functions
 - [ ] User can create a character
 - [ ] User can add new races 
