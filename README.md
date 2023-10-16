@@ -34,6 +34,51 @@ $ npm run start
 $ npm run start:dev
 ```
 
+---
+
+## Endpoints
+
+### **Register User**
+####`POST` `/user`
+This route is used to register a new user.
+- **Request**
+No parameters or queries. The body should have an object with the following properties:
+  - username
+  - password
+</br>
+
+- **Response**
+In case of success the response will be only a 201 status with no content. In case of missing fields the response will be a 400 status with an error message. In case of some unexpected error the response will be a 500 status with an error message. 
+</br>
+
+**Example of the request**
+```javascript
+// POST /user
+{
+  "username": "your nickname",
+  "password": "your password"
+}
+```
+
+**Example of the response**
+```javascript
+// HTTP Status 201 - no content
+
+// HTTP Status 400 - Bad Request
+{
+  "message": "username is required." //password is required,
+  "error": "Bad Request",
+  "statusCode": 400 
+}
+
+// HTTP Status 500 - Iternal Server Error
+{
+  "message": "unexpected error",
+  "error": "Iternal Server Error",
+  "statusCode": 500 
+}
+```
+
 ## Stay in touch
 
 - Author - Eduardo Jarek
