@@ -14,6 +14,7 @@ import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { Weapon } from './weapons/entities/weapon.entity';
 import { WeaponsModule } from './weapons/weapons.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { WeaponsModule } from './weapons/weapons.module';
     CharactersModule,
     RacesModule,
     WeaponsModule,
-    ClassesModule
+    ClassesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
