@@ -10,7 +10,7 @@ This project is for studying purposes and is still a work in progress using **Ne
 ## To-Do List
 - [x] Create database
 - [x] Registering functions
-- [ ] Login functions
+- [x] Login functions
 - [ ] User can create a character
 - [ ] User can add new races 
 - [ ] User can add new classes
@@ -48,11 +48,13 @@ No parameters or queries. The body should have an object with the following prop
 </br>
 
 - **Response**
-In case of success the response will be only a 201 status with no content. In case of missing fields the response will be a 400 status with an error message. In case of some unexpected error the response will be a 500 status with an error message. 
+  - In case of success the response will be only a 200 status returning the acces token. 
+  - Missing fields the response will be a 400 status with an error message.
+  - In case of some unexpected error the response will be a 500 status with an error message. 
 </br>
 
 **Example of the request**
-```javascript
+```json
 // POST /user
 {
   "username": "your nickname",
@@ -61,7 +63,7 @@ In case of success the response will be only a 201 status with no content. In ca
 ```
 
 **Example of the response**
-```javascript
+```json
 // HTTP Status 201 - no content
 
 // HTTP Status 400 - Bad Request
@@ -69,6 +71,61 @@ In case of success the response will be only a 201 status with no content. In ca
   "message": "username is required." //password is required,
   "error": "Bad Request",
   "statusCode": 400 
+}
+
+// HTTP Status 500 - Iternal Server Error
+{
+  "message": "unexpected error",
+  "error": "Iternal Server Error",
+  "statusCode": 500 
+}
+```
+
+---
+### **Login**
+####`POST` `/auth/login`
+This route is used to login.
+- **Request**
+No parameters or queries. The body should have an object with the following properties:
+  - username
+  - password
+</br>
+
+- **Response**
+  - In case of success the response will be only a 200 status returning the acces token. 
+  - Missing fields the response will be a 400 status with an error message. 
+  - Wrong password the response will be a 401 status with an error message. 
+  - In case of some unexpected error the response will be a 500 status with an error message. 
+</br>
+
+**Example of the request**
+```json
+// POST /auth/login
+{
+  "username": "your nickname",
+  "password": "your password"
+}
+```
+
+**Example of the response**
+```json
+// HTTP Status 200 - Ok
+{
+	"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+
+// HTTP Status 400 - Bad Request
+{
+  "message": "username is required.", //password is required
+  "error": "Bad Request",
+  "statusCode": 400 
+}
+
+// HTTP Status 401 - Bad Request
+{
+	"message": "Wrong password.",
+	"error": "Unauthorized",
+	"statusCode": 401
 }
 
 // HTTP Status 500 - Iternal Server Error
