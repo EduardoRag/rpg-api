@@ -11,10 +11,10 @@ This project is for studying purposes and is still a work in progress using **Ne
 - [x] Create database
 - [x] Registering functions
 - [x] Login functions
-- [ ] User can create a character
-- [ ] User can add new races 
-- [ ] User can add new classes
-- [ ] User can add new weapons
+- [ ] CRUD of characters
+- [ ] CRUD of races
+- [ ] CRUD of classes
+- [ ] CRUD of weapons
 
 ---
 ## Installation
@@ -48,7 +48,7 @@ No parameters or queries. The body should have an object with the following prop
 </br>
 
 - **Response**
-  - In case of success the response will be only a 200 status returning the acces token. 
+  - In case of success the response will be only a 201 status returning the acces token. 
   - Missing fields the response will be a 400 status with an error message.
   - In case of some unexpected error the response will be a 500 status with an error message. 
 </br>
@@ -64,7 +64,7 @@ No parameters or queries. The body should have an object with the following prop
 
 **Example of the response**
 ```json
-// HTTP Status 201 - no content
+// HTTP Status 201 - created
 
 // HTTP Status 400 - Bad Request
 {

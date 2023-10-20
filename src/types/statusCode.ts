@@ -1,4 +1,5 @@
 export class StatusCode {
-    status: number;
     message: string;
+    error: string;
+    status: number;
 }

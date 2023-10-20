@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -51,11 +51,51 @@ export class UserService {
     return userFound;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(req, id: number, updateUserDto: UpdateUserDto): Promise<void> {
+    const userFound = await this.usersRepository.findOneBy({ id });
+
+    if (!userFound) {
+      throw new NotFoundException('User not found.');
+    }
+
+    if (req.user.id !== id) {
+      throw new UnauthorizedException('This is not your account.');
+    }
+
+    if (updateUserDto.username) {
+      const userExist = await this.usersRepository.findOneBy({ username: updateUserDto.username });
+
+      if (userExist) {
+        throw new BadRequestException('This username is already being used');
+      }
+
+      userFound.username = updateUserDto.username;
+    }
+
+    if (updateUserDto.password) {
+      const password = await bcrypt.hash(updateUserDto.password.toString(), 10);
+
+      userFound.password = password;
+    }
+
+    await this.usersRepository.save(userFound);
+
+    return;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(req, id: number): Promise<void> {
+    const userFound = await this.usersRepository.findOneBy({ id });
+
+    if (!userFound) {
+      throw new NotFoundException('User not found.');
+    }
+
+    if (req.user.id !== id) {
+      throw new UnauthorizedException('This is not your account.');
+    }
+
+    await this.usersRepository.delete({ id });
+
+    return;
   }
 }
