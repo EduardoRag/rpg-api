@@ -13,7 +13,7 @@ export class UserService {
     private usersRepository: Repository<User>
   ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<void> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     if (!createUserDto.username) {
       throw new BadRequestException('Username is required.');
     }
@@ -32,9 +32,7 @@ export class UserService {
 
     createUserDto.password = password;
 
-    await this.usersRepository.save(createUserDto);
-
-    return;
+    return await this.usersRepository.save(createUserDto);
   }
 
   async findAll(): Promise<User[]> {
@@ -51,7 +49,7 @@ export class UserService {
     return userFound;
   }
 
-  async update(req, id: number, updateUserDto: UpdateUserDto): Promise<void> {
+  async update(req, id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const userFound = await this.usersRepository.findOneBy({ id });
 
     if (!userFound) {
@@ -78,9 +76,7 @@ export class UserService {
       userFound.password = password;
     }
 
-    await this.usersRepository.save(userFound);
-
-    return;
+    return await this.usersRepository.save(userFound);
   }
 
   async remove(req, id: number): Promise<void> {
