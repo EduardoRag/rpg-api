@@ -1,9 +1,7 @@
 import { UserDto } from '../dto/user.dto';
 
-export const userEntityMock: UserDto[] = [
-    {
-        id: 1,
-        username: 'rag',
-        password: 'teste123'
-    }
-];
+export const userEntityMock: UserDto =
+{
+    username: 'rag',
+    password: '$2b$10$L13KRXDpXGqROx8QtqElcejmVBpbeJw/Ah1nU.WkctvCdURVnWkSu'
+};

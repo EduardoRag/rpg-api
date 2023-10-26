@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, Post, Request } from '@nestjs/common';
-import { UserDto } from 'src/dto/user.dto';
-import { Public } from 'src/utils/publicRoutes';
+import { UserDto } from '../dto/user.dto';
+import { Public } from '../utils/publicRoutes';
 import { AuthService } from './auth.service';
 
 @Controller('auth')

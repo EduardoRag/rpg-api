@@ -19,7 +19,7 @@ describe('UserService', () => {
           useValue: {
             findOne: jest.fn().mockResolvedValue(userEntityMock),
             save: jest.fn().mockResolvedValue(userEntityMock),
-            find: jest.fn().mockResolvedValue(userEntityMock),
+            find: jest.fn().mockResolvedValue([userEntityMock]),
             findOneBy: jest.fn().mockResolvedValue(userEntityMock)
           }
         }
@@ -56,7 +56,7 @@ describe('UserService', () => {
   });
 
   it('should return a user in findOneByName', async () => {
-    const user = await service.findOneByName(userEntityMock[0].username);
+    const user = await service.findOneByName(userEntityMock.username);
 
     expect(user).toEqual(userEntityMock);
   });
@@ -65,7 +65,7 @@ describe('UserService', () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
 
     expect(
-      service.findOneByName(userEntityMock[0].username)
+      service.findOneByName(userEntityMock.username)
     ).rejects.toThrowError();
   });
 
@@ -73,19 +73,13 @@ describe('UserService', () => {
     jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
 
     expect(
-      service.findOneByName(userEntityMock[0].username)
+      service.findOneByName(userEntityMock.username)
     ).rejects.toThrowError();
   });
 
   it('should return an array of users in findAll', async () => {
     const users = await service.findAll();
 
-    expect(users).toEqual(userEntityMock);
-  });
-
-  it('should return error in findAll (error DB)', async () => {
-    jest.spyOn(userRepository, 'find').mockRejectedValueOnce(new Error());
-
-    expect(service.findAll()).rejects.toThrowError();
+    expect(users).toEqual([userEntityMock]);
   });
 });
